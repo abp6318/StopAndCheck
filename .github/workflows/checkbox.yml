@@ -48,7 +48,7 @@ jobs:
       - name: E2Es have been run before merging
         run: |
           body="${{ github.event.pull_request.body }}"
-          if [[ $body == *"\[ \] Ran e2e tests against sandbox build"* ]]; then
+          if [[ $body == *"- [ ] Ran e2e tests against sandbox build"* ]]; then
             echo "E2E checkmark not checked"
             exit 1
           else
