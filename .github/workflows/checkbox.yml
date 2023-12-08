@@ -47,12 +47,10 @@ jobs:
     steps:
       - name: E2Es have been run before merging
         run: |
-          # Fetch the PR body
-          body=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                   "${{ github.api_url }}/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" | jq -r '.body')
- 
-          # Confirm Ran e2e tests against sandbox build is checked off
-          if ! echo "$body" | grep -qE '\[ \] Ran e2e tests against sandbox build'; then
-            echo "Please complete all checklist items before merging."
+          body="${{ github.event.pull_request.body }}"
+          if [[ $body == *"\[ \] Ran e2e tests against sandbox build"* ]]; then
+            echo "E2E checkmark not checked"
             exit 1
+          else
+            echo "E2E checkmark checked"
           fi
